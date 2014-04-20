@@ -1,3 +1,4 @@
+#_require ./inc/helpers.coffee
 #_require ./inc/canvas.coffee
 #_require ./inc/keyboard-handler.coffee
 

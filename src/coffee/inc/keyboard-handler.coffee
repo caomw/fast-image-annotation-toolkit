@@ -10,6 +10,7 @@ $(document).on 'keydown', null, 'c', (e) ->
         else
             canvas.stopMovingAndResizing()
             canvas.unselectShape()
+        canvas.refresh()
         
 
 $(document).on 'keydown', null, 'esc', (e) ->

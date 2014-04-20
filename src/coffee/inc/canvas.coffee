@@ -1,3 +1,4 @@
+#_require ./helpers.coffee
 #_require ./shapes/rectangle.coffee
 #_require ./shapes/resizable-rectangle.coffee
 
@@ -36,20 +37,21 @@ class Canvas
             shapes = canvas.shapes
             canvas.isValid = false
 
-            # check all selection handles first
+            # check all selection handles and borders first
             for shape in canvas.shapes by -1
                 for handle, i in shape.selectionHandles
                     if handle.contains mx, my
-                        canvas.startResizingShape shape, i, mx, my
-                        return @
+                        return canvas.startResizingShape shape, i, mx, my
+                if shape.isOnBorder mx, my
+                    return canvas.startMovingShape shape, mx, my
 
             for shape in canvas.shapes by -1
                 if shape.contains mx, my
-                    canvas.startMovingShape shape, mx, my
-                    return @
+                    return canvas.startMovingShape shape, mx, my
 
             # not returned means no selection
-            canvas.selection = null
+            canvas.unselectShape()
+            canvas.refresh()
 
         @canvas.mousemove (e) ->
             mouse = canvas.getMouse e
@@ -68,15 +70,15 @@ class Canvas
 
                 canvas.resizingShape.resize(dir, x, y, w, h, dx, dy)
                 canvas.isValid = false
+            canvas.refresh()
 
 
         @canvas.mouseup (e) ->
             canvas.stopMovingAndResizing()
+            canvas.refresh()
 
         @selectionColor = '#CC0000'
         @selectionWidth = 2
-        @interval = 30
-        setInterval (-> canvas.draw()), canvas.interval
 
     startResizingShape: (shape, direction, startX, startY) ->
         @isResizing = true
@@ -85,25 +87,33 @@ class Canvas
         @resizeStartShapeInfo = [shape.x, shape.y, shape.w, shape.h]
         @resizingShape = shape
         @canvas[0].style.cursor = ['nw-resize', 'n-resize', 'ne-resize',
-                        'w-resize',  'e-resize', 'sw-resize',
-                        's-resize',  'se-resize'][direction]
+                                   'w-resize',  'e-resize', 'sw-resize',
+                                   's-resize',  'se-resize'][direction]
         @isValid = false
-        @selection = shape
+        @selectShape shape
 
     startMovingShape: (shape, startX, startY) ->
         @dragoffx = startX - shape.x
         @dragoffy = startY - shape.y
         @isDragging = true
-        @selection = shape
+        @selectShape shape
 
     stopMovingAndResizing: ->
-            @isDragging = false
-            @isResizing = false
-            @canvas[0].style.cursor = 'auto'
+        if @isResizing
+            # Give smaller shapes higher selection priority
+            @shapes.sort (shapeA, shapeB) ->
+                shapeA.getArea() < shapeB.getArea()
+        @isDragging = false
+        @isResizing = false
+        @canvas[0].style.cursor = 'auto'
+
+    selectShape: (shape) ->
+        @selection = shape
 
     unselectShape: ->
-        @selection = null
-        @isValid = false
+        if @selection
+            @selection = null
+            @isValid = false
 
     addShape: (shape) ->
         @shapes.push shape
@@ -112,7 +122,7 @@ class Canvas
     clear: () ->
         @context.clearRect 0, 0, this.width, this.height
 
-    draw: ->
+    refresh: ->
         if not @isValid
             @clear()
 

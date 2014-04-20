@@ -19,4 +19,7 @@ class Shape
     getPosition: ->
         [@x, @y, @w, @h]
 
+    getArea: ->
+        @w * @h
+
     setPosition: (@x, @y, @w, @h) ->
