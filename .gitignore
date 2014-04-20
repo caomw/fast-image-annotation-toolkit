@@ -1,6 +1,7 @@
 .DS_Store
 *~
 *.swp
+node_modules
 
 # ignore files created by CoffeeScript and LESS
 static/assets/js/*.js
