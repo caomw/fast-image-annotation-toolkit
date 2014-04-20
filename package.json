@@ -1,0 +1,14 @@
+{
+    "name": "fast-image-annotation-toolkit",
+    "description": "A modern image annotation software written in CoffeeScript, HTML5",
+    "author": "Daeyun Shin <daeyun@daeyunshin.com>",
+    "dependencies": {
+        "coffee-script": "1.x.x",
+        "rehab": "0.x.x",
+        "uglify-js": "1.x.x"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/daeyun/fast-image-annotation-toolkit"
+    }
+}
