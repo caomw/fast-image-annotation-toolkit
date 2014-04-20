@@ -28,9 +28,5 @@ $ ->
     init = ->
         canvas = new Canvas($('#my-canvas'))
         Window.canvas = canvas
-        canvas.addShape new ResizableRectangle canvas, 40, 40, 50, 50
-        canvas.addShape new ResizableRectangle canvas, 60, 140, 40, 60, 'lightskyblue'
-        canvas.addShape new ResizableRectangle canvas, 80, 150, 60, 30, 'rgba(127, 255, 212, .5)'
-        canvas.addShape new ResizableRectangle canvas, 125, 80, 30, 80, 'rgba(245, 222, 179, .7)'
     init()
     @

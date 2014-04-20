@@ -3,7 +3,7 @@ $(document).on 'keydown', null, 'c', (e) ->
         canvas = Window.canvas
         if not canvas.isResizing
             shape = new ResizableRectangle canvas, canvas.mx, canvas.my, 0, 0,
-                    'rgba(0, 255, 0, .6)'
+                    'rgba(255, 0, 0, 1)'
 
             canvas.addShape shape
             canvas.startResizingShape shape, 0, canvas.mx, canvas.my

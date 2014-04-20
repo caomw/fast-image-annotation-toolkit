@@ -8,8 +8,10 @@ class ResizableRectangle extends Shape
 
     draw: (canvas = @canvas) ->
         if not @isOutsideCanvas canvas
-            canvas.context.fillStyle = @color
-            canvas.context.fillRect @x, @y, @w, @h
+            canvas.context.lineWidth = 2
+            canvas.context.strokeStyle = @color
+            canvas.context.strokeRect @x, @y, @w, @h
+
 
     drawSelectionHandles: (canvas = @canvas) ->
         for handle, i in @selectionHandles
@@ -23,18 +25,17 @@ class ResizableRectangle extends Shape
     resize: (direction, x, y, w, h, dx, dy) ->
         [dx, dy, dw, dh] = switch direction
             when 0 then [dx, dy, -dx, -dy]
-            when 1 then [0, dy, 0, -dy]
-            when 2 then [0, dy, dx, -dy]
-            when 3 then [dx, 0, -dx, 0]
-            when 4 then [0, 0, dx, 0]
-            when 5 then [dx, 0, -dx, dy]
-            when 6 then [0, 0, 0, dy]
-            else        [0, 0, dx, dy]
+            when 1 then [0,  dy, 0,   -dy]
+            when 2 then [0,  dy, dx,  -dy]
+            when 3 then [dx, 0,  -dx, 0]
+            when 4 then [0,  0,  dx,  0]
+            when 5 then [dx, 0,  -dx, dy]
+            when 6 then [0,  0,  0,   dy]
+            else        [0,  0,  dx,  dy]
 
         if w + dw < 0
             dx = if dx > 0 then w else w + dw
             dw = -2*w - dw
-
         if h + dh < 0
             dy = if dy > 0 then h else h + dh
             dh = -2*h - dh
