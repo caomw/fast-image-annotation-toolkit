@@ -40,10 +40,13 @@ class Canvas
             canvas.isValid = false
 
             for shape in canvas.shapes by -1
-                for handle in shape.selectionHandles
+                for handle, i in shape.selectionHandles
                     if handle.contains(mx, my)
                         canvas.isResizing = true
-                        canvas.resizingDirection = handle.pos
+                        canvas.resizingDirection = i
+                        canvas.resizeStartPosition = [handle.x, handle.y]
+                        canvas.resizeStartShapeInfo = [shape.x, shape.y,
+                                                       shape.w, shape.h]
                         canvas.resizingShape = shape
                         return @
                 if shape.contains(mx, my)
@@ -62,10 +65,25 @@ class Canvas
                 canvas.selection.x = mouse.x - canvas.dragoffx
                 canvas.selection.y = mouse.y - canvas.dragoffy
                 canvas.isValid = false
+            else if canvas.isResizing
+                mouse = canvas.getMouse e
+                dir = canvas.resizingDirection
+                [x, y] = canvas.resizeStartPosition
+                [dx, dy] = [mouse.x - x, mouse.y - y]
+                [x, y, w, h] = canvas.resizeStartShapeInfo
+
+                @style.cursor = ['nw-resize', 'n-resize', 'ne-resize',
+                                 'w-resize',  'e-resize', 'sw-resize',
+                                 's-resize',  'se-resize'][dir]
+
+                canvas.resizingShape.resize(dir, x, y, w, h, dx, dy)
+                canvas.isValid = false
+
 
         @canvas.mouseup (e) ->
             canvas.isDragging = false
             canvas.isResizing = false
+            @style.cursor = 'auto'
 
         @canvas.dblclick (e) ->
             mouse = canvas.getMouse e

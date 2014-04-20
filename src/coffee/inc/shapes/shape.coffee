@@ -15,3 +15,8 @@ class Shape
     setCenter: (cx, cy) ->
         @x = cx - @w/2
         @y = cy - @h/2
+
+    getPosition: ->
+        [@x, @y, @w, @h]
+
+    setPosition: (@x, @y, @w, @h) ->

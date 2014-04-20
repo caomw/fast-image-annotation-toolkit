@@ -19,3 +19,24 @@ class ResizableRectangle extends Shape
                     [@x + @w, @y + @h]][i]
             handle.setCenter x, y
             handle.draw canvas
+
+    resize: (direction, x, y, w, h, dx, dy) ->
+        [dx, dy, dw, dh] = switch direction
+            when 0 then [dx, dy, -dx, -dy]
+            when 1 then [0, dy, 0, -dy]
+            when 2 then [0, dy, dx, -dy]
+            when 3 then [dx, 0, -dx, 0]
+            when 4 then [0, 0, dx, 0]
+            when 5 then [dx, 0, -dx, dy]
+            when 6 then [0, 0, 0, dy]
+            else        [0, 0, dx, dy]
+
+        if w + dw < 0
+            dx = if dx > 0 then w else w + dw
+            dw = -2*w - dw
+
+        if h + dh < 0
+            dy = if dy > 0 then h else h + dh
+            dh = -2*h - dh
+
+        [@x, @y, @w, @h] = [x+dx, y+dy, w+dw, h+dh]
