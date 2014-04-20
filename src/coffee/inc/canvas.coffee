@@ -36,11 +36,14 @@ class Canvas
             shapes = canvas.shapes
             canvas.isValid = false
 
+            # check all selection handles first
             for shape in canvas.shapes by -1
                 for handle, i in shape.selectionHandles
                     if handle.contains mx, my
                         canvas.startResizingShape shape, i, mx, my
                         return @
+
+            for shape in canvas.shapes by -1
                 if shape.contains mx, my
                     canvas.startMovingShape shape, mx, my
                     return @
