@@ -4,7 +4,7 @@ class ResizableRectangle extends Rectangle
     constructor: (@canvas, @x, @y, @w, @h, @color = '#AAA') ->
         @selectionHandles = []
         for i in [0..7]
-            @selectionHandles.push (new Rectangle @canvas)
+            @selectionHandles.push (new SelectionHandle @canvas, i)
 
     draw: (canvas = @canvas) ->
         if not @isOutsideCanvas canvas
@@ -13,24 +13,30 @@ class ResizableRectangle extends Rectangle
             canvas.context.strokeRect @x, @y, @w, @h
 
     drawSelectionHandles: (canvas = @canvas) ->
-        for handle, i in @selectionHandles
-            [x, y] =
-                [[@x, @y], [@x + @w/2, @y], [@x + @w, @y], [@x, @y + @h/2],
-                    [@x + @w, @y + @h/2], [@x, @y + @h], [@x + @w/2, @y + @h],
-                    [@x + @w, @y + @h]][i]
+        for handle in @selectionHandles
+            [x, y] = switch handle.getResizeDirection()
+                when 'top-left'      then [@x        ,@y       ]
+                when 'top-middle'    then [@x + @w/2 ,@y       ]
+                when 'top-right'     then [@x + @w   ,@y       ]
+                when 'middle-left'   then [@x        ,@y + @h/2]
+                when 'middle-right'  then [@x + @w   ,@y + @h/2]
+                when 'bottom-left'   then [@x        ,@y + @h  ]
+                when 'bottom-middle' then [@x + @w/2 ,@y + @h  ]
+                when 'bottom-right'  then [@x + @w   ,@y + @h  ]
+
             handle.setCenter x, y
             handle.draw canvas
 
     resize: (direction, x, y, w, h, dx, dy) ->
         [dx, dy, dw, dh] = switch direction
-            when 0 then [dx, dy, -dx, -dy]
-            when 1 then [0,  dy, 0,   -dy]
-            when 2 then [0,  dy, dx,  -dy]
-            when 3 then [dx, 0,  -dx, 0]
-            when 4 then [0,  0,  dx,  0]
-            when 5 then [dx, 0,  -dx, dy]
-            when 6 then [0,  0,  0,   dy]
-            else        [0,  0,  dx,  dy]
+            when 'top-left'      then [dx ,dy ,-dx ,-dy]
+            when 'top-middle'    then [0  ,dy ,0   ,-dy]
+            when 'top-right'     then [0  ,dy ,dx  ,-dy]
+            when 'middle-left'   then [dx ,0  ,-dx ,0  ]
+            when 'middle-right'  then [0  ,0  ,dx  ,0  ]
+            when 'bottom-left'   then [dx ,0  ,-dx ,dy ]
+            when 'bottom-middle' then [0  ,0  ,0   ,dy ]
+            when 'bottom-right'  then [0  ,0  ,dx  ,dy ]
 
         if w + dw < 0
             dx = if dx > 0 then w else w + dw

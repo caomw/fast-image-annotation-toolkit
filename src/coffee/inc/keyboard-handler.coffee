@@ -3,7 +3,7 @@ $(document).on 'keydown', null, 'c', (e) ->
         canvas = Window.canvas
         if not canvas.isResizing
             shape = canvas.addShape()
-            canvas.startResizingShape shape, 0, canvas.mx, canvas.my
+            canvas.startResizingShape shape, 'top-left', canvas.mx, canvas.my
         else
             canvas.stopMovingAndResizing()
             canvas.unselectShape()

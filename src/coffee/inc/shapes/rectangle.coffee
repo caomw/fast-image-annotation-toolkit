@@ -1,7 +1,7 @@
 #_require ./shape.coffee
 
 class Rectangle extends Shape
-    constructor: (@canvas, @x=0, @y=0, @w=7, @h=7, @color='darkred') ->
+    constructor: (@canvas, @x=0, @y=0, @w=10, @h=10, @color='chocolate') ->
 
     # Return true if the distance between input coordinate and a shape border
     # is less than or equal to dist.

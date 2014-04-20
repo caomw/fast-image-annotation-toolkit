@@ -38,9 +38,11 @@ class Canvas
 
             # check all selection handles and borders first
             for shape in canvas.shapes by -1
-                for handle, i in shape.selectionHandles
+                for handle in shape.selectionHandles
                     if handle.contains mx, my
-                        return canvas.startResizingShape shape, i, mx, my
+                        canvas.changeCursor handle.getCursor()
+                        return canvas.startResizingShape shape,
+                            handle.getResizeDirection(), mx, my
                 if shape.isOnBorder mx, my
                     return canvas.startMovingShape shape, mx, my
 
@@ -62,7 +64,7 @@ class Canvas
                 [dx, dy] = [canvas.mx - x, canvas.my - y]
                 [x, y, w, h] = canvas.resizeStartShapeInfo
 
-                canvas.resizingShape.resize(dir, x, y, w, h, dx, dy)
+                canvas.resizingShape.resize dir, x, y, w, h, dx, dy
                 canvas.isValid = false
 
             else if canvas.isDragging
@@ -72,8 +74,8 @@ class Canvas
                     canvas.isValid = false
                 else
                     shape = canvas.addShape()
-                    canvas.startResizingShape shape, 0, canvas.mx, canvas.my
-
+                    canvas.startResizingShape shape, 'top-left',
+                                              canvas.mx, canvas.my
 
             canvas.refresh() if not canvas.isValid
 
@@ -90,11 +92,11 @@ class Canvas
         @resizeStartPosition = [startX, startY]
         @resizeStartShapeInfo = [shape.x, shape.y, shape.w, shape.h]
         @resizingShape = shape
-        @canvas[0].style.cursor = ['nw-resize', 'n-resize', 'ne-resize',
-                                   'w-resize',  'e-resize', 'sw-resize',
-                                   's-resize',  'se-resize'][direction]
         @isValid = false
         @selectShape shape
+
+    changeCursor: (type) ->
+        @canvas[0].style.cursor = type
 
     startMovingShape: (shape, startX, startY) ->
         @dragoffx = startX - shape.x
@@ -138,8 +140,8 @@ class Canvas
 
     refresh: ->
         if not @isValid
+            @isValid = true
             @clear()
-
             for shape in @shapes
                 if not shape.isOutsideCanvas()
                     shape.draw()
@@ -150,8 +152,6 @@ class Canvas
                 @context.strokeRect @selection.x, @selection.y,
                                     @selection.w, @selection.h
                 @selection.drawSelectionHandles()
-
-            @isValid = true
         @
 
     getMouse: (e) ->
