@@ -156,17 +156,12 @@ class Canvas
 
     getMouse: (e) ->
         element = @canvas[0]
-        offsetX = offsetY = 0
+        offsetX = @stylePaddingLeft + @styleBorderLeft + @htmlLeft
+        offsetY = @stylePaddingTop + @styleBorderTop + @htmlTop
 
         while element.offsetParent?
             offsetX += element.offsetLeft
             offsetY += element.offsetTop
             element = element.offsetParent
 
-        offsetX += @stylePaddingLeft + @styleBorderLeft + @htmlLeft
-        offsetY += @stylePaddingTop + @styleBorderTop + @htmlTop
-
-        mx = e.pageX - offsetX
-        my = e.pageY - offsetY
-
-        {x: mx, y: my}
+        x: e.pageX-offsetX, y: e.pageY-offsetY
