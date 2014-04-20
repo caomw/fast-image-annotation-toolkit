@@ -1,4 +1,4 @@
-#_require ./inc/*
+#_require ./inc/canvas.coffee
 
 $ ->
     $.fn.cssNumber = (property) ->

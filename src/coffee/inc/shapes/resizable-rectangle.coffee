@@ -1,3 +1,5 @@
+#_require ./shape.coffee
+#
 class ResizableRectangle extends Shape
     constructor: (@canvas, @x, @y, @w, @h, @color = '#AAA') ->
         @selectionHandles = []

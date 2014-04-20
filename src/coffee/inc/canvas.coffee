@@ -1,3 +1,6 @@
+#_require ./shapes/rectangle.coffee
+#_require ./shapes/resizable-rectangle.coffee
+
 class Canvas
     constructor: (@canvas) ->
         # @canvas here is a jQuery object
