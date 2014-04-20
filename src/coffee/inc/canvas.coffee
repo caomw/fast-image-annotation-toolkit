@@ -128,8 +128,14 @@ class Canvas
         @isValid = false
         shape
 
+    removeShape: (shape) ->
+        @shapes.remove shape
+        @selection = null if @selection == shape
+        @stopMovingAndResizing()
+        @isValid = false
+
     clear: () ->
-        @context.clearRect 0, 0, this.width, this.height
+        @context.clearRect 0, 0, @width, @height
 
     refresh: ->
         if not @isValid

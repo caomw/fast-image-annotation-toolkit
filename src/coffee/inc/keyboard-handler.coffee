@@ -8,6 +8,9 @@ $(document).on 'keydown', null, 'c', (e) ->
             canvas.stopMovingAndResizing()
             canvas.unselectShape()
         canvas.refresh()
-        
 
-$(document).on 'keydown', null, 'esc', (e) ->
+$(document).on 'keydown', null, 'esc d', (e) ->
+    if Window.canvas?
+        canvas = Window.canvas
+        canvas.removeShape canvas.selection if canvas.selection
+        canvas.refresh()
