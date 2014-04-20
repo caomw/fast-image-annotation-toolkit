@@ -118,9 +118,9 @@ class Canvas
             @selection = null
             @isValid = false
 
-    addShape: (x=@mx, y=@my, shape=null) ->
+    addShape: (shape=null) ->
         if not shape
-            shape = new ResizableRectangle @, x, y, 0, 0,
+            shape = new ResizableRectangle @, @mx, @my, 0, 0,
                     'rgba(255, 0, 0, 1)'
         @shapes.push shape
 
