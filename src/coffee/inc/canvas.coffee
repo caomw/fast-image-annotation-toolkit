@@ -32,10 +32,9 @@ class Canvas
 
         @canvas.mousedown (e) ->
             mouse = canvas.getMouse(e)
-            mx = mouse.x
-            my = mouse.y
-            shapes = canvas.shapes
+            [mx, my] = [mouse.x, mouse.y]
             canvas.isValid = false
+            canvas.isDragging = true
 
             # check all selection handles and borders first
             for shape in canvas.shapes by -1
@@ -57,20 +56,26 @@ class Canvas
             mouse = canvas.getMouse e
             [canvas.mx, canvas.my] = [mouse.x, mouse.y]
 
-            if canvas.isDragging
-                canvas.selection.x = canvas.mx - canvas.dragoffx
-                canvas.selection.y = canvas.my - canvas.dragoffy
-                canvas.isValid = false
-            else if canvas.isResizing
+            if canvas.isResizing
                 dir = canvas.resizingDirection
                 [x, y] = canvas.resizeStartPosition
                 [dx, dy] = [canvas.mx - x, canvas.my - y]
                 [x, y, w, h] = canvas.resizeStartShapeInfo
 
-
                 canvas.resizingShape.resize(dir, x, y, w, h, dx, dy)
                 canvas.isValid = false
-            canvas.refresh()
+
+            else if canvas.isDragging
+                if canvas.selection
+                    canvas.selection.x = canvas.mx - canvas.dragoffx
+                    canvas.selection.y = canvas.my - canvas.dragoffy
+                    canvas.isValid = false
+                else
+                    shape = canvas.addShape()
+                    canvas.startResizingShape shape, 0, canvas.mx, canvas.my
+
+
+            canvas.refresh() if not canvas.isValid
 
 
         @canvas.mouseup (e) ->
@@ -95,7 +100,6 @@ class Canvas
     startMovingShape: (shape, startX, startY) ->
         @dragoffx = startX - shape.x
         @dragoffy = startY - shape.y
-        @isDragging = true
         @selectShape shape
 
     stopMovingAndResizing: ->
@@ -115,9 +119,14 @@ class Canvas
             @selection = null
             @isValid = false
 
-    addShape: (shape) ->
+    addShape: (x=@mx, y=@my, shape=null) ->
+        if not shape
+            shape = new ResizableRectangle @, x, y, 0, 0,
+                    'rgba(255, 0, 0, 1)'
         @shapes.push shape
+
         @isValid = false
+        shape
 
     clear: () ->
         @context.clearRect 0, 0, this.width, this.height
