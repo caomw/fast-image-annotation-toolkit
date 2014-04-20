@@ -2,6 +2,7 @@
     "name": "fast-image-annotation-toolkit",
     "description": "A modern image annotation software written in CoffeeScript, HTML5",
     "author": "Daeyun Shin <daeyun@daeyunshin.com>",
+    "version": "0.0.1",
     "dependencies": {
         "coffee-script": "1.x.x",
         "rehab": "0.x.x",
