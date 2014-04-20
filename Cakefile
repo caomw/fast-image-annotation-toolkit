@@ -5,7 +5,7 @@ COFFEE_PATH = './src/coffee'
 TARGET_PATH = './static/assets/js'
 
 BUILD_DESC = """
-    Building project from #{COFFEE_PATH}/*.coffee to #{TARGET_PATH}/script.js
+    Building project from #{COFFEE_PATH}/*.coffee to #{TARGET_PATH}/app.js
 """
 
 CLEAN_DESC = """
@@ -17,7 +17,7 @@ task 'build', BUILD_DESC, ->
 
     files = new Rehab().process COFFEE_PATH
 
-    to_single_file = "--join #{TARGET_PATH}/script.js"
+    to_single_file = "--join #{TARGET_PATH}/app.js"
     from_files = "--compile #{files.join ' '}"
 
     exec "coffee #{to_single_file} #{from_files}", (err, stdout, stderr) ->
