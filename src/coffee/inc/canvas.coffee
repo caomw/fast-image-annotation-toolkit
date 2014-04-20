@@ -77,7 +77,6 @@ class Canvas
 
             canvas.refresh() if not canvas.isValid
 
-
         @canvas.mouseup (e) ->
             canvas.stopMovingAndResizing()
             canvas.refresh()

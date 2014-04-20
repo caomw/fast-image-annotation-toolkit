@@ -12,7 +12,6 @@ class ResizableRectangle extends Rectangle
             canvas.context.strokeStyle = @color
             canvas.context.strokeRect @x, @y, @w, @h
 
-
     drawSelectionHandles: (canvas = @canvas) ->
         for handle, i in @selectionHandles
             [x, y] =

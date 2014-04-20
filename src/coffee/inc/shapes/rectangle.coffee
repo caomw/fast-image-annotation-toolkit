@@ -5,7 +5,7 @@ class Rectangle extends Shape
 
     # Return true if the distance between input coordinate and a shape border
     # is less than or equal to dist.
-    isOnBorder: (mx, my, dist= 2) ->
+    isOnBorder: (mx, my, dist=2) ->
         findMinAbs = (list) ->
             Math.min.apply @, (Math.abs x for x in list)
 
