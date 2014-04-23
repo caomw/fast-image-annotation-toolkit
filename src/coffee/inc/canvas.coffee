@@ -129,6 +129,20 @@ class Canvas
         @isValid = false
         shape
 
+    addImage: (image) ->
+        @image = image
+        @drawRotatedImage image, 45
+        @isValid = false
+        @refresh()
+
+
+    drawRotatedImage: (image, orientation=0) ->
+        @context.save()
+        @context.translate @width/2, @height/2
+        @context.rotate orientation*Math.PI/180
+        @context.drawImage @image, -@image.width/2, -@image.height/2
+        @context.restore()
+
     removeShape: (shape) ->
         @shapes.remove shape
         @selection = null if @selection == shape
@@ -142,6 +156,10 @@ class Canvas
         if not @isValid
             @isValid = true
             @clear()
+
+            if @image?
+                @drawRotatedImage @image, 45
+
             for shape in @shapes
                 if not shape.isOutsideCanvas()
                     shape.draw()
