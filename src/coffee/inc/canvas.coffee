@@ -23,65 +23,63 @@ class Canvas
         @isResizing = false
         @selection = null
 
-        canvas = @
-
         #prevent text select outside canvas on double-click
-        @canvas[0].onselectstart = (e) ->
+        @canvas[0].onselectstart = (e) =>
             e.preventDefault()
             false
 
-        @canvas.mousedown (e) ->
-            mouse = canvas.getMouse(e)
+        @canvas.mousedown (e) =>
+            mouse = @getMouse(e)
             [mx, my] = [mouse.x, mouse.y]
-            canvas.isValid = false
-            canvas.isDragging = true
+            @isValid = false
+            @isDragging = true
 
             # check all selection handles and borders first
-            for shape in canvas.shapes by -1
+            for shape in @shapes by -1
                 for handle in shape.selectionHandles
                     if handle.contains mx, my
-                        canvas.changeCursor handle.getCursor()
-                        return canvas.startResizingShape shape,
+                        @changeCursor handle.getCursor()
+                        return @startResizingShape shape,
                             handle.getResizeDirection(), mx, my
                 if shape.isOnBorder mx, my
-                    return canvas.startMovingShape shape, mx, my
+                    return @startMovingShape shape, mx, my
 
-            for shape in canvas.shapes by -1
+            for shape in @shapes by -1
                 if shape.contains mx, my
-                    return canvas.startMovingShape shape, mx, my
+                    return @startMovingShape shape, mx, my
 
             # not returned means no selection
-            canvas.unselectShape()
-            canvas.refresh()
+            @unselectShape()
+            @refresh()
 
-        @canvas.mousemove (e) ->
-            mouse = canvas.getMouse e
-            [canvas.mx, canvas.my] = [mouse.x, mouse.y]
+        @canvas.mousemove (e) =>
+            mouse = @getMouse e
+            [@mx, @my] = [mouse.x, mouse.y]
 
-            if canvas.isResizing
-                dir = canvas.resizingDirection
-                [x, y] = canvas.resizeStartPosition
-                [dx, dy] = [canvas.mx - x, canvas.my - y]
-                [x, y, w, h] = canvas.resizeStartShapeInfo
+            if @isResizing
+                dir = @resizingDirection
+                [x, y] = @resizeStartPosition
+                [dx, dy] = [@mx - x, @my - y]
+                [x, y, w, h] = @resizeStartShapeInfo
 
-                canvas.resizingShape.resize dir, x, y, w, h, dx, dy
-                canvas.isValid = false
+                @resizingShape.resize dir, x, y, w, h, dx, dy
+                @isValid = false
 
-            else if canvas.isDragging
-                if canvas.selection
-                    canvas.selection.x = canvas.mx - canvas.dragoffx
-                    canvas.selection.y = canvas.my - canvas.dragoffy
-                    canvas.isValid = false
+            else if @isDragging
+                if @selection
+                    @selection.x = @mx - @dragoffx
+                    @selection.y = @my - @dragoffy
+                    @isValid = false
                 else
-                    shape = canvas.addShape()
-                    canvas.startResizingShape shape, 'top-left',
-                                              canvas.mx, canvas.my
+                    shape = @addShape()
+                    @startResizingShape shape, 'top-left',
+                                              @mx, @my
 
-            canvas.refresh() if not canvas.isValid
+            @refresh() if not @isValid
 
-        @canvas.mouseup (e) ->
-            canvas.stopMovingAndResizing()
-            canvas.refresh()
+        @canvas.mouseup (e) =>
+            @stopMovingAndResizing()
+            @refresh()
 
         @selectionColor = '#CC0000'
         @selectionWidth = 2
