@@ -5,13 +5,26 @@ class RangesSlider
         # @rangeInput here is a jQuery object
 
         @isDragging = false
+        @initializeEvents()
+        @setValue 0
 
+    initializeEvents: ->
         @rangeInput.mousedown (e) =>
             @isDragging = true
 
         @rangeInput.mouseup (e) =>
             @isDragging = false
+            @setValue @getValue
 
         @rangeInput.mousemove (e) =>
+            @isDragging = true
             if @isDragging
-                callback @rangeInput[0].value
+                @setValue @rangeInput[0].value
+                @callback @getValue()
+
+    setValue: (value) ->
+        @value = value
+        @rangeInput[0].value = value
+
+    getValue: ->
+        parseInt @value
