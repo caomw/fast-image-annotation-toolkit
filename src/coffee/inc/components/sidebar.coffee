@@ -1,8 +1,41 @@
 class SideBar
-    # @sideBar: jQuery view object
-    constructor: (@sideBar) ->
-        @textArea = @sideBar.find '.annotations-meta-info'
-        @
+    # @sidebar: jQuery view object
+    constructor: (@sidebar) ->
+        @textArea = @sidebar.find '.annotations-meta-info'
+        @isModalShown = false
+
+        tags = localStorage.getItem('tags')
+        if tags != null
+            @tags = JSON.parse tags
+        else
+            @tags = []
+
+        @initializeEvents()
+        @initializeTagsView()
+
+    initializeEvents: ->
+        @sidebar.find('button.edit-tags').click (e) =>
+            @sidebar.find('.editable-tags').html($('<textarea>'))
+            @sidebar.find('.editable-tags').append($('<button>Save</button>'))
+            @sidebar.find('.editable-tags textarea').val((JSON.stringify @tags).replace(/[\"\[\]]+/g, ''))
+            @sidebar.find('.editable-tags button').click =>
+                try
+                    tags = @sidebar.find('.editable-tags textarea').val()
+                        .replace(/^\s*|\s*$/g,'').split(/\s*,\s*/)
+                    localStorage.setItem('tags', JSON.stringify tags)
+                    @tags = tags
+
+                @initializeTagsView()
+                @sidebar.find('.editable-tags').hide()
+                @sidebar.find('.tags').show()
+
+            @sidebar.find('.tags').hide()
+            @sidebar.find('.editable-tags').show()
+
+    initializeTagsView: =>
+        @sidebar.find('.tags').html($('<select>', {class:'form-control', multiple:''}))
+        for tag in @tags
+            @sidebar.find('.tags select').append $("<option>#{tag}</option>")
 
     setMetaData: (components) =>
         data = []
