@@ -1,4 +1,4 @@
-#_require ../shapes/shape.coffee
+#_require ./shapes/shape.coffee
 
 class SelectionHandle extends Rectangle
     constructor: (@canvas, @position, @x=0, @y=0, @w=7, @h=7,

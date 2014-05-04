@@ -1,4 +1,4 @@
-#_require ./helpers.coffee
+#_require ./../../helpers.coffee
 #_require ./shapes/rectangle.coffee
 #_require ./shapes/resizable-rectangle.coffee
 

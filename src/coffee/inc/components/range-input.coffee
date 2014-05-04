@@ -1,5 +1,3 @@
-#_require ./helpers.coffee
-
 class RangesSlider
     constructor: (@rangeInput, @callback) ->
         # @rangeInput here is a jQuery object
