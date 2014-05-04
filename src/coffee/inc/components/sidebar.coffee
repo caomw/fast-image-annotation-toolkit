@@ -72,8 +72,6 @@ class SideBar
                 data.components.push switch component.constructor.name
                     when 'CanvasImage'
                         type: 'image'
-                        centerX: component.centerX
-                        centerY: component.centerY
                         w: component.w
                         h: component.h
                         orientation: component.orientation
