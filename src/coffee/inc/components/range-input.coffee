@@ -1,6 +1,7 @@
 class RangesSlider
+    # @rangeInput: jQuery view object
+    # @callback: value of the slider will be passed to the callback function
     constructor: (@rangeInput, @callback) ->
-        # @rangeInput here is a jQuery object
 
         @isDragging = false
         @initializeEvents()

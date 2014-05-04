@@ -4,7 +4,7 @@
 
 class Canvas
     constructor: (@canvas) ->
-        # @canvas here is a jQuery object
+        # @canvas is a jQuery object
         @width = @canvas[0].width
         @height = @canvas[0].height
         @context = @canvas[0].getContext('2d')
@@ -127,17 +127,6 @@ class Canvas
         @isValid = false
         shape
 
-    addImage: (image) ->
-        @image =
-            'image':image
-            'orientation':0
-            'width':@width * image.width/image.height/2
-            'height':@height/2
-        @drawRotatedImage @image
-        @isValid = false
-        @refresh()
-
-
     drawRotatedImage: (imageObj) ->
         image = imageObj['image']
         width = imageObj['width']
@@ -148,6 +137,16 @@ class Canvas
         @context.rotate orientation*Math.PI/180
         @context.drawImage image, -width/2, -height/2, width, height
         @context.restore()
+
+    addImage: (image) =>
+        @image =
+            'image':image
+            'orientation':0
+            'width':@width * image.width/image.height/2
+            'height':@height/2
+        @drawRotatedImage @image
+        @isValid = false
+        @refresh()
 
     removeShape: (shape) ->
         @shapes.remove shape

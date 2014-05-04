@@ -18,15 +18,15 @@
 <div id="container">
     <div id="controls">
         <div class="horz-component">
-            <input id="file" type="file" style="display:none">
-            <div class="input-append">
-                <input id="selected-file" class="input-large" type="text">
-                <a class="btn" onclick="$('input[id=file]').click();">Browse</a>
+            <div class="file-input">
+                <input type="file" style="display:none">
+                <input class="selected-filename" class="input-large" type="text">
+                <a class="btn">Browse</a>
             </div>
         </div>
 
         <div class="horz-component">
-            <input class="orientation-range" type="range" id="rangeinput" min="-180" max="180" value="0" />
+            <input class="range-input" type="range" min="-180" max="180" value="0">
         </div>
     </div>
 
