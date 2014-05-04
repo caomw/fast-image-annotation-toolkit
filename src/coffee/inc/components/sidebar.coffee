@@ -10,10 +10,18 @@ class SideBar
         else
             @tags = []
 
+        selectedTags = localStorage.getItem('selectedTags')
+        if tags != null
+            @selectedTags = JSON.parse selectedTags
+        else
+            @selectedTags = []
+
         @initializeEvents()
         @initializeTagsView()
 
     initializeEvents: ->
+        @sidebar.find('button.unselect').click (e) =>
+            @sidebar.find('.tags select').val []
         @sidebar.find('button.edit-tags').click (e) =>
             @sidebar.find('.editable-tags').html($('<textarea>'))
             @sidebar.find('.editable-tags').append($('<button>Save</button>'))
@@ -37,31 +45,44 @@ class SideBar
         for tag in @tags
             @sidebar.find('.tags select').append $("<option>#{tag}</option>")
 
-    setMetaData: (components) =>
-        data = []
+        @sidebar.find('.tags select').click =>
+            @selectedTags = @sidebar.find('.tags select').val()
+            localStorage.setItem('selectedTags', JSON.stringify @selectedTags)
+            @setMetaData()
 
-        getOrigin = =>
+        @sidebar.find('.tags select').val @selectedTags
+
+
+    setMetaData: (components=@components) =>
+        @components=components
+        data = components:[], tags:[]
+
+        for tag in @selectedTags
+            data.tags.push tag
+
+        if components?
+            getOrigin = =>
+                for component in components
+                    if component.constructor.name is 'CanvasImage'
+                        return component.getCenter()
+                return x:0, y:0
+            origin = getOrigin()
+
             for component in components
-                if component.constructor.name is 'CanvasImage'
-                    return component.getCenter()
-            return x:0, y:0
-        origin = getOrigin()
-
-        for component in components
-            data.push switch component.constructor.name
-                when 'CanvasImage'
-                    type: 'image'
-                    centerX: component.centerX
-                    centerY: component.centerY
-                    w: component.w
-                    h: component.h
-                    orientation: component.orientation
-                when 'ResizableRectangle'
-                    type: 'rectangle'
-                    x: component.x - origin.x
-                    y: component.y - origin.y
-                    w: component.w
-                    h: component.h
-                    label: component.getLabel()
+                data.components.push switch component.constructor.name
+                    when 'CanvasImage'
+                        type: 'image'
+                        centerX: component.centerX
+                        centerY: component.centerY
+                        w: component.w
+                        h: component.h
+                        orientation: component.orientation
+                    when 'ResizableRectangle'
+                        type: 'rectangle'
+                        x: component.x - origin.x
+                        y: component.y - origin.y
+                        w: component.w
+                        h: component.h
+                        label: component.getLabel()
 
         @textArea.val JSON.stringify data, null, 2 # indentation
