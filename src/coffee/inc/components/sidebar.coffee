@@ -61,26 +61,28 @@ class SideBar
             data.tags.push tag
 
         if components?
-            getOrigin = =>
-                for component in components
-                    if component.constructor.name is 'CanvasImage'
-                        return component.getCenter()
-                return x:0, y:0
-            origin = getOrigin()
+            origin = x:0, y:0
+            resizeRatio = 1
+            for component in components
+                if component.constructor.name is 'CanvasImage'
+                    resizeRatio = component.resizeRatio
+                    console.log resizeRatio
+                    origin = component.getCenter()
+                    break
 
             for component in components
                 data.components.push switch component.constructor.name
                     when 'CanvasImage'
                         type: 'image'
-                        w: component.w
-                        h: component.h
+                        w: component.w/resizeRatio
+                        h: component.h/resizeRatio
                         orientation: component.orientation
                     when 'ResizableRectangle'
                         type: 'rectangle'
-                        x: component.x - origin.x
-                        y: component.y - origin.y
-                        w: component.w
-                        h: component.h
+                        x: (component.x - origin.x)/resizeRatio
+                        y: (component.y - origin.y)/resizeRatio
+                        w: component.w/resizeRatio
+                        h: component.h/resizeRatio
                         label: component.getLabel()
 
         @textArea.val JSON.stringify data, null, 2 # indentation

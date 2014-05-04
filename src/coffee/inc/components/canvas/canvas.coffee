@@ -139,12 +139,7 @@ class Canvas
 
 
     addImage: (image) =>
-        x = @width/2
-        y = @height/2
-        w = @width * image.width/image.height/1.4
-        h = @height/1.4
-        orientation = 0
-        @image = new CanvasImage image, x, y, w, h, orientation
+        @image = new CanvasImage image, @
         @image.draw @context
         @isValid = false
         @reset()
