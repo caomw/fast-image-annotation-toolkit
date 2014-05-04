@@ -35,4 +35,3 @@ class SideBar
                     return Number val.toFixed 4
                 return val
             , 2 # indentation
-

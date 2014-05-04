@@ -1,3 +1,5 @@
+#_require ./components/labels.coffee
+
 $(document).on 'keydown', null, 'c', (e) ->
     if Window.canvas?
         canvas = Window.canvas
@@ -22,3 +24,11 @@ $(document).on 'keydown', null, 'esc', (e) ->
         canvas.unselectShape()
         canvas.stopMovingAndResizing()
         canvas.refresh()
+
+$(document).on 'keydown', null, '1 2 3 4 5 6 7 8 9', (e) ->
+    e.preventDefault()
+    if Window.labels?
+        index = e.keyCode - 49
+        label = Window.labels.getLabel index
+        console.log "label selected: " + label
+        Window.canvas.setCurrentLabel label

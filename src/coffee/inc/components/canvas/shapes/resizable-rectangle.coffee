@@ -12,6 +12,14 @@ class ResizableRectangle extends Rectangle
             canvas.context.strokeStyle = @color
             canvas.context.strokeRect @x, @y, @w, @h
 
+            if @label?
+                canvas.context.fillStyle = "black"
+                canvas.context.font = "11px Arial"
+                canvas.context.strokeStyle = "white"
+                canvas.context.lineWidth = 3
+                canvas.context.strokeText @label, @x+3, @y+14
+                canvas.context.fillText @label, @x+3, @y+14
+
     drawSelectionHandles: (canvas = @canvas) ->
         for handle in @selectionHandles
             [x, y] = switch handle.getResizeDirection()

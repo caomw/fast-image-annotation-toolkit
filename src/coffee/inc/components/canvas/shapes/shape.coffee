@@ -23,3 +23,4 @@ class Shape
         @w * @h
 
     setPosition: (@x, @y, @w, @h) ->
+    setLabel: (@label) ->

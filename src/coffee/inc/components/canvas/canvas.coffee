@@ -123,6 +123,8 @@ class Canvas
         if not shape
             shape = new ResizableRectangle @, @mx, @my, 0, 0,
                     'rgba(255, 0, 0, 1)'
+            if @label?
+                shape.setLabel @label
         @shapes.push shape
 
         @isValid = false
@@ -150,6 +152,9 @@ class Canvas
         @selection = null if @selection == shape
         @stopMovingAndResizing()
         @isValid = false
+
+    setCurrentLabel: (label) ->
+        @label = label
 
     clear: () ->
         @context.clearRect 0, 0, @width, @height
