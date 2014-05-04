@@ -11,24 +11,26 @@
 <link rel="shortcut icon" href="/favicon.ico"> 
 <!-- Bootstrap -->
 <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-<link href="static/css/style.css" rel="stylesheet">
+<link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
 
-<div id="controls">
-
-
-    <input id="file" type="file" style="display:none">
-    <div class="input-append">
-    <input id="selected-file" class="input-large" type="text">
-    <a class="btn" onclick="$('input[id=file]').click();">Browse</a>
-    </div>
-
-</div>
 <div id="container">
-    <canvas id="my-canvas" width="800" height="800" style="border:1px solid #c3c3c3;">
-    Your browser does not support the HTML5 canvas tag.
-    </canvas>
+    <div id="controls">
+        <input id="file" type="file" style="display:none">
+        <div class="input-append">
+        <input id="selected-file" class="input-large" type="text">
+        <a class="btn" onclick="$('input[id=file]').click();">Browse</a>
+        </div>
+    </div>
+    <div id="sidebar">
+        <input class="orientation-range" type="range" id="rangeinput" min="-180" max="180" value="0" />
+    </div>
+    <div id="canvas-container">
+        <canvas id="my-canvas" width="800" height="800" style="border:1px solid #c3c3c3;">
+        Your browser does not support the HTML5 canvas tag.
+        </canvas>
+    </div>
 </div> <!-- /container -->
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

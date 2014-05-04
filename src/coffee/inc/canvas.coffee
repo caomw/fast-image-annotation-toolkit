@@ -130,17 +130,25 @@ class Canvas
         shape
 
     addImage: (image) ->
-        @image = image
-        @drawRotatedImage image, 45
+        @image =
+            'image':image
+            'orientation':0
+            'width':@width * image.width/image.height/2
+            'height':@height/2
+        @drawRotatedImage @image
         @isValid = false
         @refresh()
 
 
-    drawRotatedImage: (image, orientation=0) ->
+    drawRotatedImage: (imageObj) ->
+        image = imageObj['image']
+        width = imageObj['width']
+        height = imageObj['height']
+        orientation = imageObj['orientation']
         @context.save()
         @context.translate @width/2, @height/2
         @context.rotate orientation*Math.PI/180
-        @context.drawImage @image, -@image.width/2, -@image.height/2
+        @context.drawImage image, -width/2, -height/2, width, height
         @context.restore()
 
     removeShape: (shape) ->
@@ -158,7 +166,7 @@ class Canvas
             @clear()
 
             if @image?
-                @drawRotatedImage @image, 45
+                @drawRotatedImage @image
 
             for shape in @shapes
                 if not shape.isOutsideCanvas()
