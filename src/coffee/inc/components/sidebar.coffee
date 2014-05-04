@@ -29,9 +29,11 @@ class SideBar
                     y: component.y - origin.y
                     w: component.w
                     h: component.h
+                    label: component.getLabel()
 
         @textArea.val JSON.stringify data, (key, val) ->
-                if val.toFixed #  set precision of floating point numbers to 4
-                    return Number val.toFixed 4
+                try
+                    if val.toFixed #  set precision of floating point numbers to 4
+                        return Number val.toFixed 4
                 return val
             , 2 # indentation

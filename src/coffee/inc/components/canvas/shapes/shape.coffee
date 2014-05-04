@@ -1,5 +1,6 @@
 class Shape
     constructor: (@canvas, @x, @y, @w, @h, @color = '#AAA') ->
+        @label = ''
 
     draw: (canvas = @canvas) ->
         canvas.context.fillStyle = @color
@@ -24,3 +25,7 @@ class Shape
 
     setPosition: (@x, @y, @w, @h) ->
     setLabel: (@label) ->
+        if not @label? or @label == undefined
+            @label = ''
+    getLabel: ->
+        @label
