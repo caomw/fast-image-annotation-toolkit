@@ -4,10 +4,6 @@
 #_require ./inc/keyboard-handler.coffee
 
 $ ->
-    $.fn.cssNumber = (property) ->
-        value = parseInt @css(property), 10
-        if isNaN value then 0 else value
-
     $('.input-append.btn').click ->
         $('input[id=file]').click()
     $('input[id=file]').change (e) ->
