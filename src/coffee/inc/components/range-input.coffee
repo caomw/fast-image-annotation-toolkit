@@ -16,10 +16,13 @@ class RangesSlider
             @setValue @getValue
 
         @rangeInput.mousemove (e) =>
-            @isDragging = true
             if @isDragging
                 @setValue @rangeInput[0].value
                 @callback @getValue()
+
+        @rangeInput.keydown (e) =>
+            @setValue @rangeInput[0].value
+            @callback @getValue()
 
     setValue: (value) ->
         @value = value

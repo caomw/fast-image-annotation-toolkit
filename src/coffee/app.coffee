@@ -8,8 +8,8 @@ $ ->
 
     init = ->
         Window.canvas = new Canvas $ '#my-canvas'
-        Window.rangeSlider = new RangesSlider $('.range-input'), console.log
         Window.fileInput = new FileInput $('.file-input'), Window.canvas.addImage
+        Window.rangeSlider = new RangesSlider $('.range-input'), Window.canvas.setImageOrientation
 
     init()
     @

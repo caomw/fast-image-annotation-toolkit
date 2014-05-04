@@ -148,6 +148,12 @@ class Canvas
         @isValid = false
         @refresh()
 
+    setImageOrientation: (orientation) =>
+        if @image?
+            @image.orientation = orientation
+        @isValid = false
+        @refresh()
+
     removeShape: (shape) ->
         @shapes.remove shape
         @selection = null if @selection == shape
