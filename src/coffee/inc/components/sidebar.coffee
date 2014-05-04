@@ -1,6 +1,6 @@
 class SideBar
     # @sidebar: jQuery view object
-    constructor: (@sidebar) ->
+    constructor: (@sidebar, @imageManager) ->
         @textArea = @sidebar.find '.annotations-meta-info'
         @isModalShown = false
 
@@ -52,10 +52,13 @@ class SideBar
 
         @sidebar.find('.tags select').val @selectedTags
 
+    setFilename: (filename) =>
+        @filename = filename
+        @setMetaData()
 
     setMetaData: (components=@components) =>
         @components=components
-        data = components:[], tags:[]
+        data = filename: @filename, components:[], tags:[]
 
         for tag in @selectedTags
             data.tags.push tag
@@ -66,7 +69,6 @@ class SideBar
             for component in components
                 if component.constructor.name is 'CanvasImage'
                     resizeRatio = component.resizeRatio
-                    console.log resizeRatio
                     origin = component.getCenter()
                     break
 

@@ -1,14 +1,16 @@
 class ImageManager
-    constructor: (@_addImage) ->
+    constructor: (@_addImage, @_setFilename) ->
+        @currentImage = null
 
     getNextImage: =>
         try
             # pop index 0
-            nextFile = @files.splice(0, 1)[0]
+            @currentImage = @files.splice(0, 1)[0]
             img = new Image
-            img.src = URL.createObjectURL nextFile
+            img.src = URL.createObjectURL @currentImage
             img.onload = =>
                 @_addImage img
+                @_setFilename @currentImage.name
 
     addImages: (files) =>
         if not @files?
@@ -21,3 +23,5 @@ class ImageManager
 
     getCount: () ->
         @files.length
+    
+    getFilename: ->
