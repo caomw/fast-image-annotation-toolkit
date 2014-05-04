@@ -2,7 +2,7 @@ class FileInput
     # @fileInput: jQuery view object
     # @callback: file input will be passed to this function
     constructor: (@fileInput, @callback) ->
-        @fileInputControl = @fileInput.find("input[type=file]")
+        @fileInputControl = @fileInput.find('input[type=file]')
         @initializeEvents()
         @fileInput.find('input.selected-filename').val ''
         @fileInput.find('input.selected-filename').attr 'disabled', 'disabled'

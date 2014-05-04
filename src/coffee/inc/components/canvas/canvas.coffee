@@ -3,8 +3,9 @@
 #_require ./shapes/resizable-rectangle.coffee
 
 class Canvas
-    constructor: (@canvas) ->
-        # @canvas is a jQuery object
+    # @canvas: jQuery view object
+    # @setMetaData: function to pass the annotations meta data object
+    constructor: (@canvas, @setMetaData) ->
         @width = @canvas[0].width
         @height = @canvas[0].height
         @context = @canvas[0].getContext('2d')
@@ -127,24 +128,14 @@ class Canvas
         @isValid = false
         shape
 
-    drawRotatedImage: (imageObj) ->
-        image = imageObj['image']
-        width = imageObj['width']
-        height = imageObj['height']
-        orientation = imageObj['orientation']
-        @context.save()
-        @context.translate @width/2, @height/2
-        @context.rotate orientation*Math.PI/180
-        @context.drawImage image, -width/2, -height/2, width, height
-        @context.restore()
-
     addImage: (image) =>
-        @image =
-            'image':image
-            'orientation':0
-            'width':@width * image.width/image.height/2
-            'height':@height/2
-        @drawRotatedImage @image
+        x = @width/2
+        y = @height/2
+        w = @width * image.width/image.height/2
+        h = @height/2
+        orientation = 0
+        @image = new CanvasImage image, x, y, w, h, orientation
+        @image.draw @context
         @isValid = false
         @refresh()
 
@@ -168,12 +159,16 @@ class Canvas
             @isValid = true
             @clear()
 
+            allObjects = []
+
             if @image?
-                @drawRotatedImage @image
+                @image.draw @context
+                allObjects.push @image
 
             for shape in @shapes
                 if not shape.isOutsideCanvas()
                     shape.draw()
+                    allObjects.push shape
 
             if @selection
                 @context.strokeStyle = @selectionColor
@@ -181,6 +176,8 @@ class Canvas
                 @context.strokeRect @selection.x, @selection.y,
                                     @selection.w, @selection.h
                 @selection.drawSelectionHandles()
+
+            @setMetaData allObjects
         @
 
     getMouse: (e) ->
