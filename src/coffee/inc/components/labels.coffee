@@ -1,15 +1,25 @@
 class Labels
     constructor: (@labelInput) ->
-        @labelInput.val('')
-        @labels = []
+        localStorageLabels = localStorage.getItem('labels')
+        if localStorageLabels != null
+            @labelInput.val localStorageLabels
+
+        if @labelInput.val() == ''
+            @labels = ['label1', 'label2', 'label3']
+        else
+            @parseLabels()
+
         @initializeEvents()
 
     initializeEvents: ->
         @labelInput.change =>
-            try
-                @labels = @labelInput.val().replace(/^\s*|\s*$/g,'').
-                    split(/\s*,\s*/)
-            catch
+            @parseLabels()
+
+    parseLabels: ->
+        try
+            @labels = @labelInput.val().replace(/^\s*|\s*$/g,'')
+                .split(/\s*,\s*/)
+            localStorage.setItem('labels', @labels)
 
     getLabel: (index) ->
         if @labels.length == 0
