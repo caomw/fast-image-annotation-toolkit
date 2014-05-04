@@ -5,12 +5,14 @@
 #_require ./inc/components/sidebar.coffee
 #_require ./inc/components/labels.coffee
 #_require ./inc/keyboard-handler.coffee
+#_require ./inc/image-manager.coffee
 
 $ ->
     init = ->
         Window.sideBar = new SideBar $('.sidebar')
         Window.canvas = new Canvas $('#my-canvas'), Window.sideBar.setMetaData
-        Window.fileInput = new FileInput $('.file-input'), Window.canvas.addImage
+        Window.imageManager = new ImageManager Window.canvas.addImage
+        Window.fileInput = new FileInput $('.file-input'), Window.imageManager.addImages
         Window.rangeSlider = new RangesSlider $('.range-input'), Window.canvas.setImageOrientation
         Window.labels = new Labels $('input.labels')
 

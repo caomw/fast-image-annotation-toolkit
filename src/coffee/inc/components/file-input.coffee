@@ -13,7 +13,4 @@ class FileInput
 
         @fileInputControl.change (e) =>
             @fileInput.find('input.selected-filename').val @fileInputControl.val()
-            img = new Image
-            img.src = URL.createObjectURL(e.target.files[0])
-            img.onload = =>
-                @callback img
+            @callback e.target.files
