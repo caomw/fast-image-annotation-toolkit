@@ -29,6 +29,13 @@ $(document).on 'keydown', null, 'esc', (e) ->
         canvas.stopMovingAndResizing()
         canvas.refresh()
 
+# skip current image
+$(document).on 'keydown', null, 'q', (e) ->
+    e.preventDefault()
+    if Window.imageManager?
+        Window.imageManager.getNextImage()
+
+
 $(document).on 'keydown', null, '1 2 3 4 5 6 7 8 9', (e) ->
     e.preventDefault()
     if Window.labels?
