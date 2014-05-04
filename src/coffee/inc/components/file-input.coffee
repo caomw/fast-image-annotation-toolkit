@@ -5,6 +5,7 @@ class FileInput
         @fileInputControl = @fileInput.find("input[type=file]")
         @initializeEvents()
         @fileInput.find('input.selected-filename').val ''
+        @fileInput.find('input.selected-filename').attr 'disabled', 'disabled'
 
     initializeEvents: ->
         @fileInput.find('.btn').click =>
