@@ -1,6 +1,6 @@
 #_require ./components/labels.coffee
 
-$(document).on 'keydown', null, 'c', (e) ->
+createAnnotation = ->
     if Window.canvas?
         canvas = Window.canvas
         if not canvas.isResizing
@@ -10,6 +10,10 @@ $(document).on 'keydown', null, 'c', (e) ->
             canvas.stopMovingAndResizing()
             canvas.unselectShape()
         canvas.refresh()
+
+$(document).on 'keydown', null, 'c', (e) ->
+    createAnnotation()
+
 
 $(document).on 'keydown', null, 'd', (e) ->
     if Window.canvas?
@@ -32,3 +36,5 @@ $(document).on 'keydown', null, '1 2 3 4 5 6 7 8 9', (e) ->
         label = Window.labels.getLabel index
         console.log "label selected: " + label
         Window.canvas.setCurrentLabel label
+
+        createAnnotation()
